@@ -17,7 +17,7 @@ pygame.init()
 width = 800
 height = 450
 screen = pygame.display.set_mode((width, height)) # создаём экран игры
-fps = 7 # устанавливаем количество кадров в секунду
+fps = 60 # устанавливаем количество кадров в секунду
 
 clock = pygame.time.Clock() # создаём объект таймера
 
@@ -57,8 +57,63 @@ doge_image_files = [
     # Добавьте столько путей, сколько есть кадров анимации
 ]
 
-monster1 = Monster(100, 100, doge_image_files, "sounds/monster1.mp3", animation_speed=100)
+meow_image_files = [
+    'sprites_meow/meow (1).gif',
+    'sprites_meow/meow (2).gif',
+    'sprites_meow/meow (3).gif',
+    'sprites_meow/meow (4).gif',
+    'sprites_meow/meow (5).gif',
+    'sprites_meow/meow (6).gif',
+    'sprites_meow/meow (7).gif',
+    'sprites_meow/meow (8).gif',
+    'sprites_meow/meow (9).gif',
+    'sprites_meow/meow (10).gif',
+    'sprites_meow/meow (11).gif',
+    'sprites_meow/meow (12).gif',
+    'sprites_meow/meow (13).gif',
+    'sprites_meow/meow (14).gif',
+    'sprites_meow/meow (15).gif',
+    'sprites_meow/meow (16).gif',
+    'sprites_meow/meow (17).gif',
+    'sprites_meow/meow (18).gif',
+    'sprites_meow/meow (19).gif',
+    'sprites_meow/meow (20).gif',
+    'sprites_meow/meow (21).gif',
+    'sprites_meow/meow (22).gif',
+    'sprites_meow/meow (23).gif',
+    'sprites_meow/meow (24).gif',
+    'sprites_meow/meow (25).gif',
+    'sprites_meow/meow (26).gif',
+    'sprites_meow/meow (27).gif'
+]
 
+ping_image_files = [
+    'sprites_ping/ping (1).gif',
+    'sprites_ping/ping (2).gif',
+    'sprites_ping/ping (3).gif',
+    'sprites_ping/ping (4).gif',
+    'sprites_ping/ping (5).gif',
+    'sprites_ping/ping (6).gif',
+    'sprites_ping/ping (7).gif',
+    'sprites_ping/ping (8).gif',
+    'sprites_ping/ping (9).gif',
+    'sprites_ping/ping (10).gif',
+    'sprites_ping/ping (11).gif',
+    'sprites_ping/ping (12).gif',
+    'sprites_ping/ping (13).gif',
+    'sprites_ping/ping (14).gif',
+    'sprites_ping/ping (15).gif',
+    'sprites_ping/ping (16).gif',
+    'sprites_ping/ping (17).gif',
+    'sprites_ping/ping (18).gif',
+    'sprites_ping/ping (19).gif',
+    'sprites_ping/ping (20).gif',
+    'sprites_ping/ping (21).gif',
+    'sprites_ping/ping (22).gif'
+]
+monster1 = Monster(100, 100, doge_image_files, "sounds/monster1.mp3", animation_speed=50)
+monster2 = Monster(300, 100, meow_image_files, "sounds/monster2.mp3", animation_speed=50)
+monster3 = Monster(500, 100, ping_image_files, "sounds/monster3.mp3", animation_speed=100)
 
 
 
@@ -83,8 +138,12 @@ while game:
     # размещаем новую поверхность на нашем экране — подготовленный jpeg
     screen.blit(back, (0, 0))
     monster1.draw(screen)
+    monster2.draw(screen)
+    monster3.draw(screen)
     # обновляем экран игры
     monster1.update(fps)
+    monster2.update(fps)
+    monster3.update(fps)
     pygame.display.flip()
     # добавляем к таймеру количество fps для частоты обновления основного цикла
     clock.tick(fps) 
