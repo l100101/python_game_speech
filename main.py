@@ -2,15 +2,7 @@ import pygame
 from sys import exit
 from monster import Monster
 from pygame.locals import *
-# from pygame.locals import (
-#     K_UP,
-#     K_DOWN,
-#     K_LEFT,
-#     K_RIGHT,
-#     K_ESCAPE,
-#     KEYDOWN,
-#     QUIT,
-# )
+from menu import Menu
 
 pygame.init()
 # объявляем ширину и высоту экрана
@@ -101,16 +93,33 @@ ping_image_files = [
     'sprites_ping/ping (21).gif',
     'sprites_ping/ping (22).gif'
 ]
-monster1 = Monster(100, 100, doge_image_files, "sounds/monster1.mp3", animation_speed=50)
-monster2 = Monster(300, 100, meow_image_files, "sounds/monster2.mp3", animation_speed=50)
-monster3 = Monster(500, 100, ping_image_files, "sounds/monster3.mp3", animation_speed=100)
+Monster1_pos = [100, 300]
+Monster2_pos = [300, 300]
+Monster3_pos = [500, 300]
 
+monster1 = Monster(Monster1_pos[0], Monster1_pos[1], doge_image_files, "sounds/monster2.mp3", animation_speed=50)
+monster2 = Monster(Monster2_pos[0], Monster2_pos[1], meow_image_files, "sounds/monster3.mp3", animation_speed=50)
+monster3 = Monster(Monster3_pos[0], Monster3_pos[1], ping_image_files, "sounds/monster1.mp3", animation_speed=100)
+
+menu = Menu(screen, ["Play", "Level Selection", "Settings", "Exit"])
 
 pygame.mixer.music.load('sounds/soundtrack.mp3')
 pygame.mixer.music.play(-1)
-
+pygame.mixer.music.set_volume(0.5)
 game = True # объявляем переменную-флаг для цикла игры
+in_menu = True # объявляем переменную-флаг для цикла меню
 # запускаем бесконечный цикл
+# while in_menu:
+#     menu.draw( screen, 300, 300)
+#     for event in pygame.event.get():
+#         if event.type == pygame.QUIT:
+#             in_menu = False
+#             game = False
+#         elif event.type == pygame.MOUSEBUTTONDOWN:
+#             if menu.rect.collidepoint(event.pos):
+#                 in_menu = False
+
+# цикл игры
 while game:
     # получаем список возможных действий игрока
     events = pygame.event.get()
@@ -130,6 +139,7 @@ while game:
                 monster3.play_sound()
     # размещаем новую поверхность на нашем экране — подготовленный jpeg
     screen.blit(back, (0, 0))
+    test_surface.blit(screen, (10,10))
     monster1.draw(screen)
     monster2.draw(screen)
     monster3.draw(screen)

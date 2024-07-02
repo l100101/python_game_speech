@@ -32,8 +32,10 @@ class Monster:
     #     surface.blit(self.images, self.rect)
     def draw(self, surface):
         surface.blit(self.images[self.current_frame], self.rect)
+        
+
     
     def play_sound(self):
-        if not self.playing_sound:
-            self.sound.play()
-            self.playing_sound = True
+        self.sound.play()
+        # if not self.playing_sound:
+            # self.playing_sound = True
