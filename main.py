@@ -30,16 +30,6 @@ test_surface.fill('White') # добавляем цвет
 back = pygame.image.load('monsters.jpg')
 pygame.display.set_caption("Speech Game") # даём название окну игры
 
-# monster1 = pygame.image.load('monster1.png')
-# monster2 = pygame.image.load('monster2.png')
-# monster3 = pygame.image.load('monster3.png')
-# monster1 = pygame.transform.scale(monster1, (200, 200))
-# monster2 = pygame.transform.scale(monster2, (200, 200))
-# monster3 = pygame.transform.scale(monster3, (200, 200))
-# sound1 = pygame.mixer.Sound('monster1.mp3')
-# sound2 = pygame.mixer.Sound('monster2.mp3')
-# sound3 = pygame.mixer.Sound('monster3.mp3')
-
 # Загрузка изображений для анимации монстра
 doge_image_files = [
     'sprites_doge/doge (1).gif',
@@ -116,7 +106,6 @@ monster2 = Monster(300, 100, meow_image_files, "sounds/monster2.mp3", animation_
 monster3 = Monster(500, 100, ping_image_files, "sounds/monster3.mp3", animation_speed=100)
 
 
-
 pygame.mixer.music.load('sounds/soundtrack.mp3')
 pygame.mixer.music.play(-1)
 
@@ -135,6 +124,10 @@ while game:
         elif event.type == pygame.MOUSEBUTTONDOWN:
             if monster1.rect.collidepoint(event.pos):
                 monster1.play_sound()
+            if monster2.rect.collidepoint(event.pos):
+                monster2.play_sound()
+            if monster3.rect.collidepoint(event.pos):
+                monster3.play_sound()
     # размещаем новую поверхность на нашем экране — подготовленный jpeg
     screen.blit(back, (0, 0))
     monster1.draw(screen)
