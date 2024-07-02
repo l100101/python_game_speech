@@ -15,6 +15,7 @@ class Menu:
             if i == self.selected:
                 pygame.draw.rect(surface, (255, 0, 0), text_rect.inflate(10, 10))
             surface.blit(text, text_rect)
+
 # Usage example
 # pygame.init()
 # screen = pygame.display.set_mode((800, 600))
