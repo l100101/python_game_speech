@@ -111,48 +111,46 @@ monster3 = Monster(Monster3_pos[0], Monster3_pos[1], ping_image_files, "sounds/m
 pygame.mixer.music.load('sounds/soundtrack.mp3')
 pygame.mixer.music.play(-1)
 pygame.mixer.music.set_volume(0.5)
-
+click_sound = pygame.mixer.Sound("sounds/click.mp3")
 exit_rect = pygame.Rect(350, 150, 120, 30)
 
 class State:
     MENU = 1
     GAME = 2
 current_state = State.MENU
+# Создание шрифта и текста
+font = pygame.font.Font(None, 36)
+text = "Играть!"
+# Создание текстового объекта
+text_surface = font.render(text, True, "Gray")
+
 
 def print_menu():
-    print("menu")
     screen.blit(menu_image, (0, 0))
     pygame.draw.rect(screen, "Red", exit_rect, 2, 2)
+    screen.blit(text_surface, (352, 152))
     pygame.display.flip()
-        
     events = pygame.event.get()
     for event in events:
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            if exit_rect.collidepoint(event.pos):
+                click_sound.play()
+                return State.GAME
         if event.type == KEYDOWN and event.key == K_ESCAPE:
-            game = False
             pygame.quit()
             exit()
         elif event.type == pygame.QUIT:
-            game = False
             pygame.quit()
-            exit()
-        elif event.type == pygame.MOUSEBUTTONDOWN:
-            if exit_rect.collidepoint(event.pos):
-                return State.GAME         
+            exit()         
     return State.MENU
 
 def process_game():
-    print("game")
     events = pygame.event.get()
     for event in events:
-        if event.type == KEYDOWN and event.key == K_ESCAPE:
-            pygame.quit()
-            exit()
-        elif event.type == pygame.QUIT:
-            pygame.quit()
-            exit()
-        elif event.type == pygame.MOUSEBUTTONDOWN:
+        if event.type == pygame.MOUSEBUTTONDOWN:
             if exit_rect.collidepoint(event.pos):
                 print("return to menu")
+                click_sound.play()
                 return State.MENU
             elif monster1.rect.collidepoint(event.pos):
                 monster1.play_sound()
@@ -160,7 +158,14 @@ def process_game():
                 monster2.play_sound()
             elif monster3.rect.collidepoint(event.pos):
                 monster3.play_sound()
-
+        if event.type == KEYDOWN and event.key == K_ESCAPE:
+            pygame.quit()
+            exit()
+        elif event.type == pygame.QUIT:
+            pygame.quit()
+            exit()
+            
+        
     # Draw the game elements on the screen
     screen.blit(back, (0, 0))
     pygame.draw.rect(screen, "Red", exit_rect, 2, 2)
