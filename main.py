@@ -112,63 +112,77 @@ pygame.mixer.music.load('sounds/soundtrack.mp3')
 pygame.mixer.music.play(-1)
 pygame.mixer.music.set_volume(0.5)
 
-game = True # объявляем переменную-флаг для цикла игры
-in_menu = True # объявляем переменную-флаг для цикла меню
 exit_rect = pygame.Rect(350, 150, 120, 30)
-# запускаем бесконечный цикл
 
-while True:
-    while in_menu:  
-        screen.blit(menu_image, (0, 0))
-        pygame.draw.rect(screen, "Red", exit_rect, 2, 2)
-        pygame.display.flip()
+class State:
+    MENU = 1
+    GAME = 2
+current_state = State.MENU
+
+def print_menu():
+    print("menu")
+    screen.blit(menu_image, (0, 0))
+    pygame.draw.rect(screen, "Red", exit_rect, 2, 2)
+    pygame.display.flip()
         
-        events = pygame.event.get()
-        for event in events:
-            if event.type == KEYDOWN and event.key == K_ESCAPE:
-                in_menu = False
-                game = False
-            elif event.type == pygame.QUIT:
-                in_menu = False
-                game = False
-            elif event.type == pygame.MOUSEBUTTONDOWN:
-                if exit_rect.collidepoint(event.pos):
-                    in_menu = not in_menu
-                    game = True
-                
-    # цикл игры
-    while game:
-        # получаем список возможных действий игрока
-        events = pygame.event.get()
-        for event in events:
-            if event.type == KEYDOWN and event.key == K_ESCAPE:
-                pygame.quit()# …останавливаем цикл
-                exit() # добавляем корректное завершение работы
-            elif event.type == pygame.QUIT:
-                pygame.quit()# …останавливаем цикл
-                exit() # добавляем корректное завершение работы
-            elif event.type == pygame.MOUSEBUTTONDOWN:
-                if exit_rect.collidepoint(event.pos):
-                    in_menu = not in_menu
-                    game = False
-                    
-                if monster1.rect.collidepoint(event.pos):
-                    monster1.play_sound()
-                if monster2.rect.collidepoint(event.pos):
-                    monster2.play_sound()
-                if monster3.rect.collidepoint(event.pos):
-                    monster3.play_sound()
-        # размещаем новую поверхность на нашем экране — подготовленный jpeg
-        screen.blit(back, (0, 0))
-        # test_surface.blit(screen, (10,10))
-        pygame.draw.rect(screen, "Red", exit_rect, 2, 2)
-        monster1.draw(screen)
-        monster2.draw(screen)
-        monster3.draw(screen)
-        # обновляем экран игры
-        monster1.update(fps)
-        monster2.update(fps)
-        monster3.update(fps)
-        pygame.display.flip()
-        # добавляем к таймеру количество fps для частоты обновления основного цикла
-        clock.tick(fps) 
+    events = pygame.event.get()
+    for event in events:
+        if event.type == KEYDOWN and event.key == K_ESCAPE:
+            game = False
+            pygame.quit()
+            exit()
+        elif event.type == pygame.QUIT:
+            game = False
+            pygame.quit()
+            exit()
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            if exit_rect.collidepoint(event.pos):
+                return State.GAME         
+    return State.MENU
+
+def process_game():
+    print("game")
+    events = pygame.event.get()
+    for event in events:
+        if event.type == KEYDOWN and event.key == K_ESCAPE:
+            pygame.quit()
+            exit()
+        elif event.type == pygame.QUIT:
+            pygame.quit()
+            exit()
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            if exit_rect.collidepoint(event.pos):
+                print("return to menu")
+                return State.MENU
+            elif monster1.rect.collidepoint(event.pos):
+                monster1.play_sound()
+            elif monster2.rect.collidepoint(event.pos):
+                monster2.play_sound()
+            elif monster3.rect.collidepoint(event.pos):
+                monster3.play_sound()
+
+    # Draw the game elements on the screen
+    screen.blit(back, (0, 0))
+    pygame.draw.rect(screen, "Red", exit_rect, 2, 2)
+    monster1.draw(screen)
+    monster2.draw(screen)
+    monster3.draw(screen)
+
+    # Update the game state
+    monster1.update(fps)
+    monster2.update(fps)
+    monster3.update(fps)
+
+    # Update the display
+    pygame.display.flip()
+
+    # Limit the frame rate
+    clock.tick(fps)
+    return State.GAME
+
+if __name__ == "__main__":
+    while True:
+        if current_state == State.MENU:
+            current_state = print_menu()
+        elif current_state == State.GAME:    
+            current_state = process_game()
