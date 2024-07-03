@@ -18,6 +18,11 @@ height_ts = 200
 test_surface = pygame.Surface((width_ts, height_ts)) # создаём поверхность по размерам
 test_surface.fill('White') # добавляем цвет
 
+menu_image = pygame.image.load('menu_sprite.jpg')
+menu_surface = pygame.Surface((width, height)) # создаём поверхность по размерам
+menu_surface.blit(menu_image, (0, 0))
+
+
 # загружаем в переменную картинку из папки с нашим файлом
 back = pygame.image.load('monsters.jpg')
 pygame.display.set_caption("Speech Game") # даём название окну игры
@@ -101,52 +106,69 @@ monster1 = Monster(Monster1_pos[0], Monster1_pos[1], doge_image_files, "sounds/m
 monster2 = Monster(Monster2_pos[0], Monster2_pos[1], meow_image_files, "sounds/monster3.mp3", animation_speed=50)
 monster3 = Monster(Monster3_pos[0], Monster3_pos[1], ping_image_files, "sounds/monster1.mp3", animation_speed=100)
 
-menu = Menu(screen, ["Play", "Level Selection", "Settings", "Exit"])
+# menu = Menu(screen, ["Play", "Level Selection", "Settings", "Exit"])
 
 pygame.mixer.music.load('sounds/soundtrack.mp3')
 pygame.mixer.music.play(-1)
 pygame.mixer.music.set_volume(0.5)
+
 game = True # объявляем переменную-флаг для цикла игры
 in_menu = True # объявляем переменную-флаг для цикла меню
+exit_rect = pygame.Rect(350, 150, 120, 30)
 # запускаем бесконечный цикл
-# while in_menu:
-#     menu.draw( screen, 300, 300)
-#     for event in pygame.event.get():
-#         if event.type == pygame.QUIT:
-#             in_menu = False
-#             game = False
-#         elif event.type == pygame.MOUSEBUTTONDOWN:
-#             if menu.rect.collidepoint(event.pos):
-#                 in_menu = False
 
-# цикл игры
-while game:
-    # получаем список возможных действий игрока
-    events = pygame.event.get()
-    for event in events:
-        if event.type == KEYDOWN and event.key == K_ESCAPE:
-            pygame.quit()# …останавливаем цикл
-            exit() # добавляем корректное завершение работы
-        elif event.type == pygame.QUIT:
-            pygame.quit()# …останавливаем цикл
-            exit() # добавляем корректное завершение работы
-        elif event.type == pygame.MOUSEBUTTONDOWN:
-            if monster1.rect.collidepoint(event.pos):
-                monster1.play_sound()
-            if monster2.rect.collidepoint(event.pos):
-                monster2.play_sound()
-            if monster3.rect.collidepoint(event.pos):
-                monster3.play_sound()
-    # размещаем новую поверхность на нашем экране — подготовленный jpeg
-    screen.blit(back, (0, 0))
-    test_surface.blit(screen, (10,10))
-    monster1.draw(screen)
-    monster2.draw(screen)
-    monster3.draw(screen)
-    # обновляем экран игры
-    monster1.update(fps)
-    monster2.update(fps)
-    monster3.update(fps)
-    pygame.display.flip()
-    # добавляем к таймеру количество fps для частоты обновления основного цикла
-    clock.tick(fps) 
+while True:
+    while in_menu:  
+        screen.blit(menu_image, (0, 0))
+        pygame.draw.rect(screen, "Red", exit_rect, 2, 2)
+        pygame.display.flip()
+        
+        events = pygame.event.get()
+        for event in events:
+            if event.type == KEYDOWN and event.key == K_ESCAPE:
+                in_menu = False
+                game = False
+            elif event.type == pygame.QUIT:
+                in_menu = False
+                game = False
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                if exit_rect.collidepoint(event.pos):
+                    in_menu = not in_menu
+                    game = True
+                
+    # цикл игры
+    while game:
+        # получаем список возможных действий игрока
+        events = pygame.event.get()
+        for event in events:
+            if event.type == KEYDOWN and event.key == K_ESCAPE:
+                pygame.quit()# …останавливаем цикл
+                exit() # добавляем корректное завершение работы
+            elif event.type == pygame.QUIT:
+                pygame.quit()# …останавливаем цикл
+                exit() # добавляем корректное завершение работы
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                if exit_rect.collidepoint(event.pos):
+                    in_menu = not in_menu
+                    game = False
+                    
+                if monster1.rect.collidepoint(event.pos):
+                    monster1.play_sound()
+                if monster2.rect.collidepoint(event.pos):
+                    monster2.play_sound()
+                if monster3.rect.collidepoint(event.pos):
+                    monster3.play_sound()
+        # размещаем новую поверхность на нашем экране — подготовленный jpeg
+        screen.blit(back, (0, 0))
+        # test_surface.blit(screen, (10,10))
+        pygame.draw.rect(screen, "Red", exit_rect, 2, 2)
+        monster1.draw(screen)
+        monster2.draw(screen)
+        monster3.draw(screen)
+        # обновляем экран игры
+        monster1.update(fps)
+        monster2.update(fps)
+        monster3.update(fps)
+        pygame.display.flip()
+        # добавляем к таймеру количество fps для частоты обновления основного цикла
+        clock.tick(fps) 
