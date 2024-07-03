@@ -22,7 +22,6 @@ menu_image = pygame.image.load('menu_sprite.jpg')
 menu_surface = pygame.Surface((width, height)) # создаём поверхность по размерам
 menu_surface.blit(menu_image, (0, 0))
 
-
 # загружаем в переменную картинку из папки с нашим файлом
 back = pygame.image.load('monsters.jpg')
 pygame.display.set_caption("Speech Game") # даём название окну игры
@@ -124,6 +123,36 @@ text = "Играть!"
 # Создание текстового объекта
 text_surface = font.render(text, True, "Gray")
 
+def draw_monsters():
+    Monster1_pos[0] += 1
+    Monster1_pos[1] += 1
+    if Monster1_pos[0] > width  or Monster1_pos[1] > height:
+        Monster1_pos[0] = 0
+        Monster1_pos[1] = 0
+    monster1.set_coords(Monster1_pos[0], Monster1_pos[1])
+    
+    Monster2_pos[0] -= 1
+    Monster2_pos[1] += 1
+    if Monster2_pos[0] < 0  or Monster2_pos[1] > height:
+        Monster2_pos[0] = width
+        Monster2_pos[1] = 0
+    monster2.set_coords(Monster2_pos[0], Monster2_pos[1])
+    
+    Monster3_pos[0] += 1
+    Monster3_pos[1] -= 1
+    if Monster3_pos[0] > width  or Monster3_pos[1] < 0:
+        Monster3_pos[0] = 0
+        Monster3_pos[1] = height
+    monster3.set_coords(Monster3_pos[0], Monster3_pos[1])
+    
+    monster1.draw(screen)
+    monster2.draw(screen)
+    monster3.draw(screen)
+    # Update the game state
+    monster1.update(fps)
+    monster2.update(fps)
+    monster3.update(fps)
+
 
 def print_menu():
     screen.blit(menu_image, (0, 0))
@@ -169,21 +198,18 @@ def process_game():
     # Draw the game elements on the screen
     screen.blit(back, (0, 0))
     pygame.draw.rect(screen, "Red", exit_rect, 2, 2)
-    monster1.draw(screen)
-    monster2.draw(screen)
-    monster3.draw(screen)
-
-    # Update the game state
-    monster1.update(fps)
-    monster2.update(fps)
-    monster3.update(fps)
-
+    text_surface = font.render("В меню", True, "Gray")
+    screen.blit(text_surface, (352, 152))
+    
+    draw_monsters()
     # Update the display
-    pygame.display.flip()
-
     # Limit the frame rate
+    pygame.display.flip()
     clock.tick(fps)
     return State.GAME
+
+
+
 
 if __name__ == "__main__":
     while True:
@@ -191,3 +217,4 @@ if __name__ == "__main__":
             current_state = print_menu()
         elif current_state == State.GAME:    
             current_state = process_game()
+

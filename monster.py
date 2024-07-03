@@ -32,7 +32,12 @@ class Monster:
     #     surface.blit(self.images, self.rect)
     def draw(self, surface):
         surface.blit(self.images[self.current_frame], self.rect)
+           
         
+    def set_coords(self, x, y):
+        self.x = x
+        self.y = y
+        self.rect = self.images[0].get_rect(topleft=(self.x, self.y))
 
     
     def play_sound(self):
