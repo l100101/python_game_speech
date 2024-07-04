@@ -124,34 +124,32 @@ text = "Играть!"
 text_surface = font.render(text, True, "Gray")
 
 def draw_monsters():
-    Monster1_pos[0] += 1
-    Monster1_pos[1] += 1
-    if Monster1_pos[0] > width  or Monster1_pos[1] > height:
-        Monster1_pos[0] = 0
-        Monster1_pos[1] = 0
+    # Monster1_pos[0] += 1
+    # Monster1_pos[1] += 1
+    # if Monster1_pos[0] > width  or Monster1_pos[1] > height:
+    #     Monster1_pos[0] = 0
+    #     Monster1_pos[1] = 0
     monster1.set_coords(Monster1_pos[0], Monster1_pos[1])
     
-    Monster2_pos[0] -= 1
-    Monster2_pos[1] += 1
-    if Monster2_pos[0] < 0  or Monster2_pos[1] > height:
-        Monster2_pos[0] = width
-        Monster2_pos[1] = 0
+    # Monster2_pos[0] -= 1
+    # Monster2_pos[1] += 1
+    # if Monster2_pos[0] < 0  or Monster2_pos[1] > height:
+    #     Monster2_pos[0] = width
+    #     Monster2_pos[1] = 0
     monster2.set_coords(Monster2_pos[0], Monster2_pos[1])
     
-    Monster3_pos[0] += 1
-    Monster3_pos[1] -= 1
-    if Monster3_pos[0] > width  or Monster3_pos[1] < 0:
-        Monster3_pos[0] = 0
-        Monster3_pos[1] = height
+    # Monster3_pos[0] += 1
+    # Monster3_pos[1] -= 1
+    # if Monster3_pos[0] > width  or Monster3_pos[1] < 0:
+    #     Monster3_pos[0] = 0
+    #     Monster3_pos[1] = height
     monster3.set_coords(Monster3_pos[0], Monster3_pos[1])
     
     monster1.draw(screen)
     monster2.draw(screen)
     monster3.draw(screen)
     # Update the game state
-    monster1.update(fps)
-    monster2.update(fps)
-    monster3.update(fps)
+
 
 
 def print_menu():
@@ -183,10 +181,13 @@ def process_game():
                 return State.MENU
             elif monster1.rect.collidepoint(event.pos):
                 monster1.play_sound()
+                monster1.update(fps)
             elif monster2.rect.collidepoint(event.pos):
                 monster2.play_sound()
+                monster2.update(fps)
             elif monster3.rect.collidepoint(event.pos):
                 monster3.play_sound()
+                monster3.update(fps)
         if event.type == KEYDOWN and event.key == K_ESCAPE:
             pygame.quit()
             exit()
