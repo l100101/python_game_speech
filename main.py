@@ -16,6 +16,7 @@ pygame.display.set_caption("Учусь читать")
 white = (255, 255, 255)
 red = (255, 0, 0)
 blue = (0, 0, 255)
+green = (0, 255, 0)
 
 # Массивы объектов
 objects_A_Box = []
@@ -30,13 +31,12 @@ image_A = pygame.image.load("alphabet/A.png")
 image_O = pygame.image.load("alphabet/O.png")
 image_Y = pygame.image.load("alphabet/Y.png")
 
-
 # Создание объектов
 for i in range(10):
-    # objects1.append(pygame.Rect(50 + i * 70, 50, 50, 50))
     objects_A.append(pygame.Rect(50 + i * 70, 50, image_A.get_width(), image_A.get_height()))
     objects_O.append(pygame.Rect(50 + i * 70, 200, image_O.get_width(), image_O.get_height()))
-    objects_A_Box.append(pygame.Rect(50 + i * 70, 300, 50, 50))
+    objects_A_Box.append(pygame.Rect(50 , 300, 50, 50)) # 10 рамок в 1 точке (50, 300) 
+    objects_O_Box.append(pygame.Rect(50 + i * 70, 400, 50, 50))
     
 # Переменная для хранения перетаскиваемого объекта
 dragging = None
@@ -67,15 +67,23 @@ while True:
         screen.blit(image_O, obj)
     for obj in objects_A_Box:
         pygame.draw.rect(screen, blue, obj, 5)
+    for obj in objects_O_Box:
+        pygame.draw.rect(screen, red, obj, 5)
 
-    # Проверка пересечения объектов
+
+# Проверка пересечения объектов
     for obj1 in objects_A_Box:
+        intersecting = False
         for obj2 in objects_A:
             if obj1.colliderect(obj2):
-                print("Пересечение!")
+                intersecting = True
+                break
+        if intersecting:
+            pygame.draw.rect(screen, green, obj1, 5)
+        else:
+            pygame.draw.rect(screen, blue, obj1, 5)
 
     # Обновление экрана
     pygame.display.flip()
-
     # Ограничение скорости игры
     pygame.time.Clock().tick(60)
