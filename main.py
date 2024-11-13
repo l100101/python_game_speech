@@ -17,6 +17,7 @@ white = (255, 255, 255)
 red = (255, 0, 0)
 blue = (0, 0, 255)
 green = (0, 255, 0)
+orange = (255, 165, 0)
 
 # Массивы объектов
 objects_A_Box = []
@@ -68,7 +69,8 @@ while True:
     for obj in objects_A_Box:
         pygame.draw.rect(screen, blue, obj, 5)
     for obj in objects_O_Box:
-        pygame.draw.rect(screen, red, obj, 5)
+        # pygame.draw.rect(screen, red, obj, 5)
+        pygame.draw.circle(screen, orange, obj.center, 30, 5)
 
 
 # Проверка пересечения объектов
