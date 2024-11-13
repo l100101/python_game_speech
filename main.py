@@ -27,8 +27,8 @@ objects_Y = []
 
 # image_A_Box = pygame.image.load("alphabet/A_Box.png")
 # image_O_Box = pygame.image.load("alphabet/O_Box.png")
-image_A = pygame.image.load("alphabet/A.png")
-image_O = pygame.image.load("alphabet/O.png")
+image_A = pygame.image.load("alphabet/a_cursive.png")
+image_O = pygame.image.load("alphabet/o_cursive.png")
 image_Y = pygame.image.load("alphabet/Y.png")
 
 # Создание объектов
