@@ -52,6 +52,9 @@ while True:
             for obj in objects_A_Box:
                 if obj.collidepoint(event.pos):
                     dragging = obj
+            for obj in objects_O_Box:
+                if obj.collidepoint(event.pos):
+                    dragging = obj                    
         elif event.type == pygame.MOUSEBUTTONUP:
             dragging = None
         elif event.type == pygame.MOUSEMOTION and dragging:
@@ -66,12 +69,20 @@ while True:
         screen.blit(image_A, obj)
     for obj in objects_O:
         screen.blit(image_O, obj)
-    for obj in objects_A_Box:
-        pygame.draw.rect(screen, blue, obj, 5)
-    for obj in objects_O_Box:
-        # pygame.draw.rect(screen, red, obj, 5)
-        pygame.draw.circle(screen, orange, obj.center, 30, 5)
 
+    # for obj in objects_O_Box:
+        # pygame.draw.rect(screen, red, obj, 5)
+        # pygame.draw.circle(screen, orange, obj.center, 30, 5)
+    for obj1 in objects_O_Box:
+        intersecting = False
+        for obj2 in objects_O:
+            if obj1.colliderect(obj2):
+                intersecting = True
+                break
+        if intersecting:
+            pygame.draw.circle(screen, green, obj1.center, 30, 5)
+        else:
+            pygame.draw.circle(screen, orange, obj1.center, 30, 5)
 
 # Проверка пересечения объектов
     for obj1 in objects_A_Box:
