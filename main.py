@@ -33,15 +33,32 @@ image_O = pygame.image.load("alphabet/o_cursive.png")
 image_Y = pygame.image.load("alphabet/Y.png")
 
 # Создание объектов
+# for i in range(10):
+#     objects_A.append(pygame.Rect(50 + i * 70, 50, 30, 30))
+#     objects_O.append(pygame.Rect(50 + i * 70, 200, 30, 30))
+#     objects_A_Box.append(pygame.Rect(50 , 300, 50, 50)) # 10 рамок в 1 точке (50, 300) 
+#     objects_O_Box.append(pygame.Rect(50 + i * 70, 400, 50, 50))
+
+# Создание объектов
+# for i in range(10):
+#     x = random.randrange(50, 700, 50)
+#     y = random.randrange(50, 400, 50)
+objects_A.append(pygame.Rect(50,  50, 30, 30))
+objects_A.append(pygame.Rect(250, 50, 30, 30))
+objects_A.append(pygame.Rect(350, 50, 30, 30))
+objects_A.append(pygame.Rect(450, 50, 30, 30))
+objects_A.append(pygame.Rect(500, 50, 30, 30))
+
+
+objects_O.append(pygame.Rect(100, 50, 30, 30))
+
+
 for i in range(10):
-    objects_A.append(pygame.Rect(50 + i * 70, 50, image_A.get_width(), image_A.get_height()))
-    objects_O.append(pygame.Rect(50 + i * 70, 200, image_O.get_width(), image_O.get_height()))
-    objects_A_Box.append(pygame.Rect(50 , 300, 50, 50)) # 10 рамок в 1 точке (50, 300) 
-    objects_O_Box.append(pygame.Rect(50 + i * 70, 400, 50, 50))
-    
+    objects_A_Box.append(pygame.Rect(50 , 500, 50, 50)) # 10 рамок в 1 точке (50, 300) 
+    objects_O_Box.append(pygame.Rect(150 , 500, 50, 50))
+
 # Переменная для хранения перетаскиваемого объекта
 dragging = None
-
 # Основной цикл игры
 while True:
     for event in pygame.event.get():
@@ -73,6 +90,8 @@ while True:
     # for obj in objects_O_Box:
         # pygame.draw.rect(screen, red, obj, 5)
         # pygame.draw.circle(screen, orange, obj.center, 30, 5)
+
+# Проверка пересечения объектов
     for obj1 in objects_O_Box:
         intersecting = False
         for obj2 in objects_O:
@@ -81,6 +100,7 @@ while True:
                 break
         if intersecting:
             pygame.draw.circle(screen, green, obj1.center, 30, 5)
+            
         else:
             pygame.draw.circle(screen, orange, obj1.center, 30, 5)
 
