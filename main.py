@@ -43,14 +43,15 @@ image_Y = pygame.image.load("alphabet/Y.png")
 # for i in range(10):
 #     x = random.randrange(50, 700, 50)
 #     y = random.randrange(50, 400, 50)
-objects_A.append(pygame.Rect(50,  50, 30, 30))
-objects_A.append(pygame.Rect(250, 50, 30, 30))
-objects_A.append(pygame.Rect(350, 50, 30, 30))
-objects_A.append(pygame.Rect(450, 50, 30, 30))
-objects_A.append(pygame.Rect(500, 50, 30, 30))
+objects_A.append(pygame.Rect(50,  50, 1, 1 ))
+objects_A.append(pygame.Rect(250, 50, 1, 1))
+objects_A.append(pygame.Rect(350, 50, 1, 1))
+objects_A.append(pygame.Rect(450, 50, 1, 1))
+objects_A.append(pygame.Rect(500, 50, 1, 1))
 
 
-objects_O.append(pygame.Rect(100, 50, 30, 30))
+objects_O.append(pygame.Rect(150, 50, 30, 30))
+objects_O.append(pygame.Rect(500, 50, 30, 30))
 
 
 for i in range(10):
@@ -91,7 +92,7 @@ while True:
         # pygame.draw.rect(screen, red, obj, 5)
         # pygame.draw.circle(screen, orange, obj.center, 30, 5)
 
-# Проверка пересечения объектов
+# Проверка пересечения объектов, рисование кругов
     for obj1 in objects_O_Box:
         intersecting = False
         for obj2 in objects_O:
@@ -104,7 +105,7 @@ while True:
         else:
             pygame.draw.circle(screen, orange, obj1.center, 30, 5)
 
-# Проверка пересечения объектов
+# Проверка пересечения объектов, рисование квадратов
     for obj1 in objects_A_Box:
         intersecting = False
         for obj2 in objects_A:
