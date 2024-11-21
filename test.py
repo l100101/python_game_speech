@@ -65,8 +65,8 @@ while True:
     # Рисование границ
     for rect in objects_A_Box:
         pygame.draw.rect(screen, blue, rect, 5)
-    # for rect in objects_O_Box:
-    #     pygame.draw.rect(screen, orange, rect, 5)
+    for rect in objects_O_Box:
+        pygame.draw.rect(screen, orange, rect, 5)
 
     # Проверка нахождения объектов внутри границ
     for obj1 in objects_O_Box:
