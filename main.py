@@ -1,19 +1,16 @@
 import pygame
-
-# Инициализация pygame
 pygame.init()
 pygame.font.init()
 
-# Настройка шрифта
-font = pygame.font.Font("font.ttf", 75)  # Используется пользовательский шрифт
 
+font = pygame.font.Font("font.ttf", 75)  # Используется пользовательский шрифт
 # Создание окна
 screen_width = 1024
 screen_height = 800
 screen = pygame.display.set_mode((screen_width, screen_height))
 
 # Название игры
-pygame.display.set_caption("Учусь читать")
+pygame.display.set_caption("Жирафик-дисграфик")
 
 # Цвета
 white = (255, 255, 255)
@@ -21,33 +18,48 @@ green = (0, 255, 0)
 blue = (0, 0, 255)
 orange = (255, 165, 0)
 
-# Буквы для замены изображений
+# Буквы 
 letters = {
-    "а": font.render("а", True, (0, 0, 0)),
-    "о": font.render("о", True, (0, 0, 0)),
-    "у": font.render("о", True, (0, 0, 0)),
-    "ю": font.render("о", True, (0, 0, 0)),
-    "ц": font.render("о", True, (0, 0, 0)),
-    "т": font.render("о", True, (0, 0, 0)),
-    "б": font.render("о", True, (0, 0, 0)),
-    "д": font.render("о", True, (0, 0, 0)),
-    "л": font.render("о", True, (0, 0, 0)),
-    "м": font.render("о", True, (0, 0, 0)),
-    "е": font.render("о", True, (0, 0, 0)),
-    "г": font.render("о", True, (0, 0, 0)),
-    "и": font.render("о", True, (0, 0, 0)),
-    "н": font.render("о", True, (0, 0, 0)),
-    "к": font.render("о", True, (0, 0, 0)),
-    "п": font.render("о", True, (0, 0, 0)),
-    "р": font.render("о", True, (0, 0, 0)),
-    "ф": font.render("о", True, (0, 0, 0))
-   
+    "а": font.render("а", True, "Black"),
+    "о": font.render("о", True, "Black"),
+    "б": font.render("б", True, "Black"),
+    "у": font.render("у", True, "Black"),
+    "ю": font.render("ю", True, (0, 0, 0)),
+    "ц": font.render("ц", True, (0, 0, 0)),
+    "т": font.render("т", True, (0, 0, 0)),
+    "д": font.render("д", True, (0, 0, 0)),
+    "л": font.render("л", True, (0, 0, 0)),
+    "м": font.render("м", True, (0, 0, 0)),
+    "е": font.render("е", True, (0, 0, 0)),
+    "г": font.render("г", True, (0, 0, 0)),
+    "и": font.render("и", True, (0, 0, 0)),
+    "н": font.render("н", True, (0, 0, 0)),
+    "к": font.render("к", True, (0, 0, 0)),
+    "п": font.render("п", True, (0, 0, 0)),
+    "р": font.render("р", True, (0, 0, 0)),
+    "ф": font.render("ф", True, (0, 0, 0))   
 }
-
 
 # Создание массивов объектов
 objects_A = [pygame.Rect(50, 50, *letters["а"].get_size())]
 objects_O = [pygame.Rect(150, 50, *letters["о"].get_size())]
+objects_B = [pygame.Rect(250, 50, *letters["б"].get_size())]
+objects_U = [pygame.Rect(350, 50, *letters["у"].get_size())]
+objects_Y = [pygame.Rect(450, 50, *letters["ю"].get_size())]
+objects_C = [pygame.Rect(550, 50, *letters["ц"].get_size())]
+objects_T = [pygame.Rect(650, 50, *letters["т"].get_size())]
+objects_D = [pygame.Rect(750, 50, *letters["д"].get_size())]
+objects_L = [pygame.Rect(850, 50, *letters["л"].get_size())]
+objects_M = [pygame.Rect(950, 50, *letters["м"].get_size())]
+objects_E = [pygame.Rect(50, 100, *letters["е"].get_size())]
+objects_G = [pygame.Rect(150, 100, *letters["г"].get_size())]
+objects_I = [pygame.Rect(250, 100, *letters["и"].get_size())]
+objects_N = [pygame.Rect(350, 100, *letters["н"].get_size())]
+objects_K = [pygame.Rect(450, 100, *letters["к"].get_size())]
+objects_P = [pygame.Rect(550, 100, *letters["п"].get_size())]
+objects_R = [pygame.Rect(650, 100, *letters["р"].get_size())]
+objects_F = [pygame.Rect(750, 100, *letters["ф"].get_size())]
+
 
 objects_A_Box = [pygame.Rect(50, 500, 75, 75)]
 objects_O_Box = [pygame.Rect(150, 500, 75, 75)]
@@ -79,6 +91,29 @@ while True:
         screen.blit(letters["а"], rect)
     for rect in objects_O:
         screen.blit(letters["о"], rect)
+    for rect in objects_B:
+        screen.blit(letters["б"], rect)
+    for rect in objects_U:
+        screen.blit(letters["у"], rect)
+    for rect in objects_Y:
+        screen.blit(letters["ю"], rect)
+    for rect in objects_C:
+        screen.blit(letters["ц"], rect)
+    for rect in objects_T:
+        screen.blit(letters["т"], rect)
+    for rect in objects_D:
+        screen.blit(letters["д"], rect)
+    for rect in objects_L:
+        screen.blit(letters["л"], rect)
+    for rect in objects_M:
+        screen.blit(letters["м"], rect)
+    for rect in objects_E:
+        screen.blit(letters["е"], rect)
+    for rect in objects_G:
+        screen.blit(letters["г"], rect)
+    for rect in objects_I:
+        screen.blit(letters["и"], rect)
+    
 
     # Рисование границ
     for rect in objects_A_Box:
