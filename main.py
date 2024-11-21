@@ -25,7 +25,25 @@ orange = (255, 165, 0)
 letters = {
     "а": font.render("а", True, (0, 0, 0)),
     "о": font.render("о", True, (0, 0, 0)),
+    "у": font.render("о", True, (0, 0, 0)),
+    "ю": font.render("о", True, (0, 0, 0)),
+    "ц": font.render("о", True, (0, 0, 0)),
+    "т": font.render("о", True, (0, 0, 0)),
+    "б": font.render("о", True, (0, 0, 0)),
+    "д": font.render("о", True, (0, 0, 0)),
+    "л": font.render("о", True, (0, 0, 0)),
+    "м": font.render("о", True, (0, 0, 0)),
+    "е": font.render("о", True, (0, 0, 0)),
+    "г": font.render("о", True, (0, 0, 0)),
+    "и": font.render("о", True, (0, 0, 0)),
+    "н": font.render("о", True, (0, 0, 0)),
+    "к": font.render("о", True, (0, 0, 0)),
+    "п": font.render("о", True, (0, 0, 0)),
+    "р": font.render("о", True, (0, 0, 0)),
+    "ф": font.render("о", True, (0, 0, 0))
+   
 }
+
 
 # Создание массивов объектов
 objects_A = [pygame.Rect(50, 50, *letters["а"].get_size())]
