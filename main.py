@@ -3,7 +3,7 @@ pygame.init()
 pygame.font.init()
 
 
-font = pygame.font.Font("font.ttf", 75)  # Используется пользовательский шрифт
+font = pygame.font.Font("font.ttf", 75)  # Используется пользовательский шрифт AmadeusAP
 # Создание окна
 screen_width = 1024
 screen_height = 800
@@ -20,24 +20,24 @@ orange = (255, 165, 0)
 
 # Буквы 
 letters = {
-    "а": font.render("а", True, "Black"),
-    "о": font.render("о", True, "Black"),
-    "б": font.render("б", True, "Black"),
-    "у": font.render("у", True, "Black"),
-    "ю": font.render("ю", True, (0, 0, 0)),
-    "ц": font.render("ц", True, (0, 0, 0)),
-    "т": font.render("т", True, (0, 0, 0)),
-    "д": font.render("д", True, (0, 0, 0)),
-    "л": font.render("л", True, (0, 0, 0)),
-    "м": font.render("м", True, (0, 0, 0)),
-    "е": font.render("е", True, (0, 0, 0)),
-    "г": font.render("г", True, (0, 0, 0)),
-    "и": font.render("и", True, (0, 0, 0)),
-    "н": font.render("н", True, (0, 0, 0)),
-    "к": font.render("к", True, (0, 0, 0)),
-    "п": font.render("п", True, (0, 0, 0)),
-    "р": font.render("р", True, (0, 0, 0)),
-    "ф": font.render("ф", True, (0, 0, 0))   
+    "а": font.render("а", True, "black"),
+    "о": font.render("о", True, "black"),
+    "б": font.render("б", True, "black"),
+    "у": font.render("у", True, "black"),
+    "ю": font.render("ю", True, "black"),
+    "ц": font.render("ц", True, "black"),
+    "т": font.render("т", True, "black"),
+    "д": font.render("д", True, "black"),
+    "л": font.render("л", True, "black"),
+    "м": font.render("м", True, "black"),
+    "е": font.render("е", True, "black"),
+    "г": font.render("г", True, "black"),
+    "и": font.render("и", True, "black"),
+    "н": font.render("н", True, "black"),
+    "к": font.render("к", True, "black"),
+    "п": font.render("п", True, "black"),
+    "р": font.render("р", True, "black"),
+    "ф": font.render("ф", True, "black")   
 }
 
 # Создание массивов объектов
