@@ -1,3 +1,7 @@
+#Дописать кнопку выхода
+#Name   File "main.py", line 75, in <module>
+#NameError: name 'quit' is not defined
+
 import pygame
 pygame.init()
 pygame.font.init()
