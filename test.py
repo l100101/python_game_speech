@@ -14,6 +14,8 @@ FPS = 60
 # Настройки цвета
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
+RED = (255, 0, 0)
+BLUE = (0, 0, 255)
 
 # Создание окна
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -24,7 +26,7 @@ clock = pygame.time.Clock()
 map_1 = pygame.image.load("map_lvl_1/map_1.png")
 player_sprite = pygame.image.load("player_sprites/player_sprite.png")
 player_sprite = pygame.transform.scale(player_sprite, (50, 50))
-# Загрузка спрайтов
+move_distance = 50
 
 # Функция для воспроизведения видео с помощью ffpyplayer
 def play_video(video_path):
@@ -69,6 +71,17 @@ class Level:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.running = False
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                mouse_pos = event.pos
+                if self.arrows["up"].collidepoint(mouse_pos):
+                    self.player_pos[1] -= move_distance
+                elif self.arrows["down"].collidepoint(mouse_pos):
+                    self.player_pos[1] += move_distance
+                elif self.arrows["left"].collidepoint(mouse_pos):
+                    self.player_pos[0] -= move_distance
+                elif self.arrows["right"].collidepoint(mouse_pos):
+                    self.player_pos[0] += move_distance
+
 
     def update(self):
         pass
@@ -89,23 +102,37 @@ class Level1(Level):
     def __init__(self, screen):
         super().__init__(screen)
         self.player_pos = [SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2]
-        self.target_pos = [100, 100]  # Целевая точка
+        self.target_pos = [100, 700]  # Целевая точка
         self.background = map_1
         self.player = player_sprite
+        # Координаты стрелок
+        self.arrows = {
+            "up": pygame.Rect(SCREEN_WIDTH // 2 - 25, SCREEN_HEIGHT - (SCREEN_HEIGHT - 10), 50, 50),
+            "down": pygame.Rect(SCREEN_WIDTH // 2 - 25, SCREEN_HEIGHT - 100, 50, 50),
+            "left": pygame.Rect(SCREEN_WIDTH - (SCREEN_WIDTH - 10), SCREEN_HEIGHT // 2, 50, 50),
+            "right": pygame.Rect(SCREEN_WIDTH - 100, SCREEN_HEIGHT // 2, 50, 50),
+        }
+
+                
 
     def handle_events(self):
         super().handle_events()
-        keys = pygame.key.get_pressed()
-        move_distance = 5
+        move_distance = 50
 
-        if keys[pygame.K_UP]:
-            self.player_pos[1] -= move_distance
-        if keys[pygame.K_DOWN]:
-            self.player_pos[1] += move_distance
-        if keys[pygame.K_LEFT]:
-            self.player_pos[0] -= move_distance
-        if keys[pygame.K_RIGHT]:
-            self.player_pos[0] += move_distance
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                self.running = False
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                mouse_pos = event.pos
+                if self.arrows["up"].collidepoint(mouse_pos):
+                    self.player_pos[1] -= move_distance
+                elif self.arrows["down"].collidepoint(mouse_pos):
+                    self.player_pos[1] += move_distance
+                elif self.arrows["left"].collidepoint(mouse_pos):
+                    self.player_pos[0] -= move_distance
+                elif self.arrows["right"].collidepoint(mouse_pos):
+                    self.player_pos[0] += move_distance
+
 
     def update(self):
         # Проверка достижения цели
@@ -118,6 +145,23 @@ class Level1(Level):
     def draw(self):
         self.screen.blit(self.background, (0, 0))
         self.screen.blit(self.player, (self.player_pos[0], self.player_pos[1]))
+        # Рисуем стрелки
+        arrow_up = pygame.image.load("arrows_sprites/arrow_up.png")
+        arrow_down = pygame.image.load("arrows_sprites/arrow_down.png")
+        arrow_left = pygame.image.load("arrows_sprites/arrow_left.png")
+        arrow_right = pygame.image.load("arrows_sprites/arrow_right.png")
+        # Resize the images (e.g., to 50x50 pixels)
+        arrow_up = pygame.transform.scale(arrow_up,      (80, 80))
+        arrow_down = pygame.transform.scale(arrow_down,  (80, 80))
+        arrow_left = pygame.transform.scale(arrow_left,  (80, 80))
+        arrow_right = pygame.transform.scale(arrow_right,(80, 80))
+        
+        # Blit the scaled images onto the screen
+        self.screen.blit(arrow_up, self.arrows["up"])
+        self.screen.blit(arrow_down, self.arrows["down"])
+        self.screen.blit(arrow_left, self.arrows["left"])
+        self.screen.blit(arrow_right, self.arrows["right"])
+
 
 # Уровень 2
 class Level2(Level):
