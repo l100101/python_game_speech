@@ -60,6 +60,52 @@ def play_video(video_path):
             running = False
 
     player.close_player()
+class Player:
+    def __init__(self):
+        self.x = 200
+        self.y = 100
+        self.rect = pygame.Rect(self.x, self.y, 50, 50)
+        self.speed = 5
+        self.character_direction = "right"  # текущее направление персонажа
+        self.frame = 0  # текущий кадр анимации
+        self.walk_animation_delay = 10  # задержка смены кадра анимации
+        self.animation_counter = 0  # счетчик для управления анимацией
+        
+        # Загрузка кадров анимации для ходьбы персонажа (например, 4 кадра для движения вправо)
+        self.walk_right = [pygame.image.load(f"player_sprites/walk_right_{i}.png") for i in range(1, 5)]
+        self.walk_left = [pygame.image.load(f"player_sprites/walk_left_{i}.png") for i in range(1, 5)]
+        self.walk_up = [pygame.image.load(f"player_sprites/walk_up_{i}.png") for i in range(1, 5)]
+        self.walk_down = [pygame.image.load(f"player_sprites/walk_down_{i}.png") for i in range(1, 5)]
+        
+        # Масштабируем изображения
+        walk_right = [pygame.transform.scale(img, (50, 50)) for img in walk_right]
+        walk_left = [pygame.transform.scale(img, (50, 50)) for img in walk_left]
+        walk_up = [pygame.transform.scale(img, (50, 50)) for img in walk_up]
+        walk_down = [pygame.transform.scale(img, (50, 50)) for img in walk_down]
+
+
+    def move(self, dx, dy):
+        self.x += dx
+        self.y += dy
+
+    def play_animation(self):
+        if self.character_direction == "right":
+            screen.blit(self.walk_right[frame], self.character_rect)
+        elif self.character_direction == "left":
+            screen.blit(self.walk_left[frame], self.character_rect)
+        elif self.character_direction == "up":
+            screen.blit(self.walk_up[frame], self.character_rect)
+        elif self.character_direction == "down":
+            screen.blit(self.walk_down[frame], self.character_rect)
+        # Обновление кадров анимации
+        animation_counter += 1
+        if animation_counter >= self.walk_animation_delay:
+            animation_counter = 0
+            frame = (frame + 1) % len(self.walk_right)  # Зацикливаем анимацию
+
+    # Обновление экрана
+    pygame.display.flip()
+
 
 # Базовый класс уровня
 class Level:
@@ -71,16 +117,16 @@ class Level:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.running = False
-            elif event.type == pygame.MOUSEBUTTONDOWN:
-                mouse_pos = event.pos
-                if self.arrows["up"].collidepoint(mouse_pos):
-                    self.player_pos[1] -= move_distance
-                elif self.arrows["down"].collidepoint(mouse_pos):
-                    self.player_pos[1] += move_distance
-                elif self.arrows["left"].collidepoint(mouse_pos):
-                    self.player_pos[0] -= move_distance
-                elif self.arrows["right"].collidepoint(mouse_pos):
-                    self.player_pos[0] += move_distance
+            # elif event.type == pygame.MOUSEBUTTONDOWN:
+            #     mouse_pos = event.pos
+            #     if self.arrows["up"].collidepoint(mouse_pos):
+            #         self.player_pos[1] -= move_distance
+            #     elif self.arrows["down"].collidepoint(mouse_pos):
+            #         self.player_pos[1] += move_distance
+            #     elif self.arrows["left"].collidepoint(mouse_pos):
+            #         self.player_pos[0] -= move_distance
+            #     elif self.arrows["right"].collidepoint(mouse_pos):
+            #         self.player_pos[0] += move_distance
 
 
     def update(self):
@@ -113,12 +159,10 @@ class Level1(Level):
             "right": pygame.Rect(SCREEN_WIDTH - 100, SCREEN_HEIGHT // 2, 50, 50),
         }
 
-                
 
     def handle_events(self):
-        super().handle_events()
+        # super().handle_events()
         move_distance = 50
-
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.running = False
@@ -126,6 +170,7 @@ class Level1(Level):
                 mouse_pos = event.pos
                 if self.arrows["up"].collidepoint(mouse_pos):
                     self.player_pos[1] -= move_distance
+                    Player.play_animation(self)
                 elif self.arrows["down"].collidepoint(mouse_pos):
                     self.player_pos[1] += move_distance
                 elif self.arrows["left"].collidepoint(mouse_pos):
@@ -133,7 +178,9 @@ class Level1(Level):
                 elif self.arrows["right"].collidepoint(mouse_pos):
                     self.player_pos[0] += move_distance
 
-
+    def play_animation(self):
+        # Воспроизведение анимации
+        pass
     def update(self):
         # Проверка достижения цели
         if abs(self.player_pos[0] - self.target_pos[0]) < 10 and abs(self.player_pos[1] - self.target_pos[1]) < 10:
@@ -186,7 +233,7 @@ def main():
     level1.run()
 
     # Переход между уровнями (видео)
-    play_video("video/gate_lvl.mp4")
+    # play_video("video/gate_lvl.mp4")
 
     # Уровень 2
     level2 = Level2(screen)
