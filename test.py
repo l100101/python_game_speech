@@ -1,97 +1,136 @@
 import pygame
+import sys
+import os
 
-# Инициализация pygame
+# Инициализация Pygame
 pygame.init()
-pygame.font.init()
 
-# Настройка шрифта
-font = pygame.font.Font("font.ttf", 75)  # Используется пользовательский шрифт
+# Константы экрана
+SCREEN_WIDTH = 800
+SCREEN_HEIGHT = 600
+FPS = 60
+
+# Настройки цвета
+BLACK = (0, 0, 0)
+WHITE = (255, 255, 255)
 
 # Создание окна
-screen_width = 1024
-screen_height = 800
-screen = pygame.display.set_mode((screen_width, screen_height))
+screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+pygame.display.set_caption("Game with Levels and Transitions")
+clock = pygame.time.Clock()
 
-# Название игры
-pygame.display.set_caption("Учусь читать")
+# Загрузка спрайтов
+map_1 = pygame.image.load("map_lvl_1/map_1.png")
+player_sprite = pygame.image.load("player_sprites/player_sprite.png")
+player_sprite = pygame.transform.scale(player_sprite, (50, 50))
 
-# Цвета
-white = (255, 255, 255)
-green = (0, 255, 0)
-blue = (0, 0, 255)
-orange = (255, 165, 0)
+# Функция для воспроизведения видео
+def play_video(video_path):
+    if not os.path.exists(video_path):
+        print(f"Видео {video_path} не найдено!")
+        return
 
-# Буквы для замены изображений
-letters = {
-    "а": font.render("а", True, (0, 0, 0)),
-    "о": font.render("о", True, (0, 0, 0)),
-}
+    from moviepy.editor import VideoFileClip
 
-# Создание массивов объектов
-objects_A = [pygame.Rect(50, 50, *letters["а"].get_size())]
-objects_O = [pygame.Rect(150, 50, *letters["о"].get_size())]
+    clip = VideoFileClip(video_path)
+    clip.preview()
 
-objects_A_Box = [pygame.Rect(50, 500, 75, 75)]
-objects_O_Box = [pygame.Rect(150, 500, 75, 75)]
+# Базовый класс уровня
+class Level:
+    def __init__(self, screen):
+        self.screen = screen
+        self.running = True
 
-# Переменная для хранения перетаскиваемого объекта
-dragging = None
+    def handle_events(self):
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                self.running = False
 
-# Основной цикл игры
-while True:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            pygame.quit()
-            quit()
-        elif event.type == pygame.MOUSEBUTTONDOWN:
-            for obj in objects_A_Box + objects_O_Box:
-                if obj.collidepoint(event.pos):
-                    dragging = obj
-        elif event.type == pygame.MOUSEBUTTONUP:
-            dragging = None
-        elif event.type == pygame.MOUSEMOTION and dragging:
-            dragging.x = event.pos[0] - dragging.width // 2
-            dragging.y = event.pos[1] - dragging.height // 2
+    def update(self):
+        pass
 
-    # Очистка экрана
-    screen.fill(white)
+    def draw(self):
+        pass
 
-    # Рисование букв
-    for rect in objects_A:
-        screen.blit(letters["а"], rect)
-    for rect in objects_O:
-        screen.blit(letters["о"], rect)
+    def run(self):
+        while self.running:
+            self.handle_events()
+            self.update()
+            self.draw()
+            pygame.display.flip()
+            clock.tick(FPS)
 
-    # Рисование границ
-    for rect in objects_A_Box:
-        pygame.draw.rect(screen, blue, rect, 5)
-    for rect in objects_O_Box:
-        pygame.draw.rect(screen, orange, rect, 5)
+# Уровень 1
+class Level1(Level):
+    def __init__(self, screen):
+        super().__init__(screen)
+        self.player_pos = [SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2]
+        self.target_pos = [100, 100]  # Целевая точка
+        self.background = map_1
+        self.player = player_sprite
 
-    # Проверка нахождения объектов внутри границ
-    for obj1 in objects_O_Box:
-        contained = False
-        for obj2 in objects_O:
-            if obj1.contains(obj2):  # Проверка, находится ли буква "о" внутри квадрата
-                contained = True
-                break
-        if contained:
-            pygame.draw.circle(screen, green, obj1.center, 35, 5)
-        else:
-            pygame.draw.circle(screen, orange, obj1.center, 35, 5)
+    def handle_events(self):
+        super().handle_events()
+        keys = pygame.key.get_pressed()
+        move_distance = 5
 
-    for obj1 in objects_A_Box:
-        contained = False
-        for obj2 in objects_A:
-            if obj1.contains(obj2):  # Проверка, находится ли буква "а" внутри квадрата
-                contained = True
-                break
-        if contained:
-            pygame.draw.rect(screen, green, obj1, 5)
-        else:
-            pygame.draw.rect(screen, blue, obj1, 5)
+        if keys[pygame.K_UP]:
+            self.player_pos[1] -= move_distance
+        if keys[pygame.K_DOWN]:
+            self.player_pos[1] += move_distance
+        if keys[pygame.K_LEFT]:
+            self.player_pos[0] -= move_distance
+        if keys[pygame.K_RIGHT]:
+            self.player_pos[0] += move_distance
 
-    # Обновление экрана
-    pygame.display.flip()
-    # Ограничение скорости игры
-    pygame.time.Clock().tick(60)
+    def update(self):
+        # Проверка достижения цели
+        if abs(self.player_pos[0] - self.target_pos[0]) < 10 and abs(self.player_pos[1] - self.target_pos[1]) < 10:
+            # Смена фона и возвращение игрока в центр
+            self.background = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT))
+            self.background.fill(WHITE)
+            self.player_pos = [SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2]
+
+    def draw(self):
+        self.screen.blit(self.background, (0, 0))
+        self.screen.blit(self.player, (self.player_pos[0], self.player_pos[1]))
+
+# Уровень 2
+class Level2(Level):
+    def __init__(self, screen):
+        super().__init__(screen)
+
+    def update(self):
+        # Логика уровня 2
+        pass
+
+    def draw(self):
+        self.screen.fill(BLACK)
+        # Рисуем элементы уровня 2
+        font = pygame.font.Font(None, 36)
+        text = font.render("Level 2", True, WHITE)
+        self.screen.blit(text, (SCREEN_WIDTH // 2 - text.get_width() // 2, SCREEN_HEIGHT // 2))
+
+# Главная функция игры
+def main():
+    # Уровень 1
+    level1 = Level1(screen)
+    level1.run()
+
+    # Переход между уровнями (видео)
+    play_video("transition1.mp4")
+
+    # Уровень 2
+    level2 = Level2(screen)
+    level2.run()
+
+    # Переход между уровнями (видео)
+    play_video("transition2.mp4")
+
+    # Конец игры
+    print("Game Over!")
+    pygame.quit()
+    sys.exit()
+
+if __name__ == "__main__":
+    main()
