@@ -1,6 +1,7 @@
 import pygame
 import sys
 import os
+from ffpyplayer.player import MediaPlayer
 
 # Инициализация Pygame
 pygame.init()
@@ -23,17 +24,40 @@ clock = pygame.time.Clock()
 map_1 = pygame.image.load("map_lvl_1/map_1.png")
 player_sprite = pygame.image.load("player_sprites/player_sprite.png")
 player_sprite = pygame.transform.scale(player_sprite, (50, 50))
+# Загрузка спрайтов
 
-# Функция для воспроизведения видео
+# Функция для воспроизведения видео с помощью ffpyplayer
 def play_video(video_path):
     if not os.path.exists(video_path):
         print(f"Видео {video_path} не найдено!")
         return
 
-    from moviepy.editor import VideoFileClip
+    player = MediaPlayer(video_path)
+    running = True
 
-    clip = VideoFileClip(video_path)
-    clip.preview()
+    while running:
+        frame, val = player.get_frame()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                player.close_player()
+                pygame.quit()
+                sys.exit()
+
+        if frame is not None:
+            img, t = frame
+            if img is not None:
+                img_data = bytes(img.to_bytearray()[0])
+                width, height = img.get_size()
+                video_frame = pygame.image.frombuffer(img_data, (width, height), "RGB")
+                screen.blit(pygame.transform.scale(video_frame, (SCREEN_WIDTH, SCREEN_HEIGHT)), (0, 0))
+                pygame.display.flip()
+
+        clock.tick(FPS)  # Синхронизация по FPS
+
+        if val == 'eof':  # Конец видео
+            running = False
+
+    player.close_player()
 
 # Базовый класс уровня
 class Level:
@@ -118,7 +142,7 @@ def main():
     level1.run()
 
     # Переход между уровнями (видео)
-    play_video("transition1.mp4")
+    play_video("video/gate_lvl.mp4")
 
     # Уровень 2
     level2 = Level2(screen)
